@@ -2,9 +2,11 @@ import "./App.css";
 import DirectionList from "./components/DirectionList";
 import StyledDropzone from "./components/DropZone";
 import Grid from "@mui/material/Grid";
+import UploadGPXButton from "./components/UploadGPXButton";
+import { useState } from "react";
+import axios from "axios";
 
 function App() {
-  const items: string[] = ["left", "right"];
   return (
     <Grid container spacing={2}>
       <Grid item xs={8}>
@@ -12,18 +14,13 @@ function App() {
           <StyledDropzone></StyledDropzone>
         </div>
       </Grid>
-      <Grid item xs={4}>
+      {/* <Grid item xs={4}>
         <div style={{ padding: "0px" }}>
-          <DirectionList items={items}></DirectionList>
+          <DirectionList items={instructions}></DirectionList>
         </div>
-      </Grid>
+      </Grid> */}
     </Grid>
   );
 }
 
 export default App;
-
-// 1. Add a list of turn by turn directions - check
-// 2. Add a button to upload a gpx file - check
-// 3. Add a drop zone to drop the gpx file - check
-// Handle the file

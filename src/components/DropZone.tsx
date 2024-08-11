@@ -1,6 +1,7 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { DropzoneRootProps, useDropzone } from "react-dropzone";
 import styled from "styled-components";
+import axios from "axios";
 
 const getColor = (props: DropzoneRootProps) => {
   if (props.isDragAccept) {
@@ -32,10 +33,31 @@ const Container = styled.div`
 `;
 
 function StyledDropzone() {
+  // const [instructions, setInstructions] = useState(["Dummy Instruction"]);
   const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } =
     useDropzone({
       accept: { "file/gpx": [".gpx"] },
-      onDrop: (files) => console.log(files),
+      onDrop: (files) => {
+        const file = files[0];
+
+        if (file) {
+          const formData = new FormData();
+          formData.append("gpx", file);
+          const backend = axios.create({ baseURL: "http://localhost:5001" });
+          backend
+            .post("/api/route", formData, {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            })
+            .then((response) => {
+              console.log(response.data.paths[0].instructions);
+            })
+            .catch((error) => {
+              console.error("Error fetching route:", error);
+            });
+        }
+      },
     });
 
   return (
