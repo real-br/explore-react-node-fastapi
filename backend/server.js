@@ -1,7 +1,7 @@
 import express from "express";
-import route from "./routes/route.js";
 import cors from "cors";
 import dotenv from "dotenv";
+import gpxController from "./controllers/gpxParser.cjs";
 dotenv.config();
 
 const app = express();
@@ -11,14 +11,14 @@ app.use(express.json());
 app.use(cors());
 
 app.get("/api", (req, res) => {
-  res.send("Backend is on 🔥");
+  res.status(200).send("Backend is on 🔥");
 });
 
-app.get("/api/route", (req, res) => {
-  res.send("Service is on 🔥");
+app.get("/api/parse", (req, res) => {
+  res.status(200).send("Service is on 🔥");
 });
 
-app.post("/api/route", route);
+app.post("/api/parse", gpxController.processGpx);
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {

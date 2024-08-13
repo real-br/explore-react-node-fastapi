@@ -1,7 +1,9 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { DropzoneRootProps, useDropzone } from "react-dropzone";
 import styled from "styled-components";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
+import DirectionList from "./DirectionList";
+import Grid from "@mui/material/Grid";
 
 const getColor = (props: DropzoneRootProps) => {
   if (props.isDragAccept) {
@@ -32,8 +34,14 @@ const Container = styled.div`
   transition: border 0.24s ease-in-out;
 `;
 
+interface Props {
+  onResponse: (response: AxiosResponse) => void;
+}
+
 function StyledDropzone() {
-  // const [instructions, setInstructions] = useState(["Dummy Instruction"]);
+  const [routeOwner, setRouteOwner] = useState("");
+  const [routeName, setRouteName] = useState("");
+  const [distance, setDistance] = useState("");
   const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } =
     useDropzone({
       accept: { "file/gpx": [".gpx"] },
@@ -45,29 +53,44 @@ function StyledDropzone() {
           formData.append("gpx", file);
           const backend = axios.create({ baseURL: "http://localhost:5001" });
           backend
-            .post("/api/route", formData, {
+            .post("/api/parse", formData, {
               headers: {
                 "Content-Type": "multipart/form-data",
               },
             })
             .then((response) => {
-              console.log(response.data.paths[0].instructions);
+              setRouteOwner(response.data.gpx.metadata.author.name);
+              setRouteName(response.data.gpx.metadata.name);
+              setDistance(response.data.gpx.tracks[0].distance.total || "");
             })
             .catch((error) => {
-              console.error("Error fetching route:", error);
+              console.error("Error parsing gpx:", error);
             });
         }
       },
     });
 
   return (
-    <div className="container">
-      <Container {...getRootProps({ isFocused, isDragAccept, isDragReject })}>
-        <input {...getInputProps()} />
-        <p>Drag & drop some files here, or click to select files</p>
-        <em>(Only *.gpx files are accepted)</em>
-      </Container>
-    </div>
+    <Grid container spacing={2}>
+      <Grid item xs={8}>
+        <div style={{ padding: "0px" }}>
+          <div className="container">
+            <Container
+              {...getRootProps({ isFocused, isDragAccept, isDragReject })}
+            >
+              <input {...getInputProps()} />
+              <p>Drag & drop some files here, or click to select files</p>
+              <em>(Only *.gpx files are accepted)</em>
+            </Container>
+          </div>
+        </div>
+      </Grid>
+      <Grid item xs={4}>
+        <div style={{ padding: "0px" }}>
+          <DirectionList item={distance}></DirectionList>
+        </div>
+      </Grid>
+    </Grid>
   );
 }
 
