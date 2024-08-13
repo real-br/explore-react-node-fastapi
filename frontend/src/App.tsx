@@ -1,15 +1,15 @@
 import "./App.css";
-import DirectionList from "./components/DirectionList";
 import StyledDropzone from "./components/DropZone";
-import Grid from "@mui/material/Grid";
-import UploadGPXButton from "./components/UploadGPXButton";
-import { useState } from "react";
-import axios from "axios";
+import RouteCard from "./components/routeCard";
 import React from "react";
 
 function App() {
   // const [instructions, setInstructions] = useState("Dummy Instruction");
-  return <StyledDropzone></StyledDropzone>;
+  return (
+    <div>
+      <StyledDropzone></StyledDropzone>
+    </div>
+  );
 }
 
 export default App;
