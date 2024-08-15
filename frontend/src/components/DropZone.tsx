@@ -7,12 +7,14 @@ import Container from "@mui/material/Container";
 import RouteCard from "./RouteCard";
 import Typography from "@mui/material/Typography";
 import BikeAnimation from "./BikeAnimation";
+import Confetti from "react-confetti";
 
 function StyledDropzone() {
   const [routeOwner, setRouteOwner] = useState("");
   const [routeName, setRouteName] = useState("");
   const [distance, setDistance] = useState(0);
   const [gpxParsed, setGpxParsed] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
   const { getRootProps, getInputProps } = useDropzone({
     accept: { "file/gpx": [".gpx"] },
     onDrop: (files) => {
@@ -42,6 +44,8 @@ function StyledDropzone() {
             console.error("Error parsing gpx:", error);
           });
       }
+      setShowConfetti(true);
+      setTimeout(() => setShowConfetti(false), 5000);
     },
   });
 
@@ -49,7 +53,12 @@ function StyledDropzone() {
     <Container style={{ height: "100vh" }}>
       <Grid
         container
-        style={{ height: "100%", paddingLeft: "8px", paddingRight: "8px" }}
+        style={{
+          height: "100%",
+          paddingLeft: "8px",
+          paddingRight: "8px",
+          padding: "15px",
+        }}
       >
         <Grid item xs={8}>
           <Box
@@ -86,6 +95,7 @@ function StyledDropzone() {
               </div>
             </Box>
           </Box>
+          {showConfetti && <Confetti />}
         </Grid>
 
         <Grid item xs={4}>
@@ -105,7 +115,7 @@ function StyledDropzone() {
                 distance={distance}
               />
             ) : (
-              <BikeAnimation />
+              <BikeAnimation width={10} height={10} />
             )}
           </Box>
         </Grid>

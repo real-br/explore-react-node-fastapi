@@ -1,11 +1,21 @@
 // BikeAnimation.js
 import React from "react";
 import Lottie from "lottie-react";
-import bikeAnimation from "./bikeAnimation3.json"; // Path to your animation JSON file
+import bikeAnimation from "../assets/bikeAnimation3.json"; // Path to your animation JSON file
 
-const BikeAnimation = () => (
+interface Props {
+  width: number;
+  height: number;
+}
+
+const BikeAnimation = ({ width, height }: Props) => (
   <div className="bike">
-    <Lottie animationData={bikeAnimation} loop={true} />
+    <Lottie
+      animationData={bikeAnimation}
+      loop={true}
+      height={width}
+      width={height}
+    />
   </div>
 );
 

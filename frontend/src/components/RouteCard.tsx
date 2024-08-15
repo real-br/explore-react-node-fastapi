@@ -27,7 +27,7 @@ const RouteCard = ({ title, distance, owner }: Props) => {
     >
       <CardContent>
         <Typography
-          variant="h6"
+          variant="h1"
           sx={{
             fontSize: 20,
             backgroundColor: "#3f51b5",
