@@ -17,5 +17,5 @@ def read_item(item_id: int, q: Union[str, None] = None):
 
 
 @app.post("/api/parse")
-def process_gpx(gpx: UploadFile = File(...)):
-    return process_gpx_endpoint(gpx)
+async def process_gpx(gpx: UploadFile = File(...)):
+    return await process_gpx_endpoint(gpx)

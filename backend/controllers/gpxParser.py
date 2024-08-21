@@ -35,8 +35,6 @@ async def process_gpx_endpoint(gpx: UploadFile = File(...)):
         # Clean up by removing the uploaded file
         os.remove(gpx_file_path)
 
-        print(1 / 0)
-
         print(JSONResponse(content=response_data))
         return JSONResponse(content=response_data)
 
