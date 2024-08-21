@@ -23,7 +23,7 @@ function StyledDropzone() {
       if (file) {
         const formData = new FormData();
         formData.append("gpx", file);
-        const backend = axios.create({ baseURL: "http://localhost:5001" });
+        const backend = axios.create({ baseURL: "http://localhost:8000" });
         backend
           .post("/api/parse", formData, {
             headers: {
@@ -39,13 +39,13 @@ function StyledDropzone() {
               )
             );
             setGpxParsed(true);
+            setShowConfetti(true);
+            setTimeout(() => setShowConfetti(false), 5000);
           })
           .catch((error) => {
             console.error("Error parsing gpx:", error);
           });
       }
-      setShowConfetti(true);
-      setTimeout(() => setShowConfetti(false), 5000);
     },
   });
 
